@@ -13,6 +13,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
@@ -126,6 +127,7 @@ public class LigaJpaController implements Serializable {
         }
     }
 
+    
     public int getLigaCount() {
         EntityManager em = getEntityManager();
         try {
@@ -138,5 +140,15 @@ public class LigaJpaController implements Serializable {
             em.close();
         }
     }
+    public Liga findLigaByNombre(String nombreLiga) {
+    EntityManager em = getEntityManager();
+    try {
+        TypedQuery<Liga> query = em.createQuery("SELECT l FROM Liga l WHERE l.nombre = :nombre", Liga.class);
+        query.setParameter("nombre", nombreLiga);
+        return query.getSingleResult();
+    } finally {
+        em.close();
+    }
+}
     
 }

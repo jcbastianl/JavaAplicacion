@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.competenciadeportivafinal.Persistencia;
 
 import com.mycompany.competenciadeportivafinal.Persistencia.exceptions.NonexistentEntityException;
@@ -12,18 +9,20 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
-/**
- *
- * @author Sebastian
- */
+
 public class EquipoJpaController implements Serializable {
 
     public EquipoJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
+     public EquipoJpaController(){
+        emf = Persistence.createEntityManagerFactory("CompePU"); 
+    }
+     
     private EntityManagerFactory emf = null;
 
     public EntityManager getEntityManager() {
@@ -120,6 +119,7 @@ public class EquipoJpaController implements Serializable {
             em.close();
         }
     }
+    
 
     public int getEquipoCount() {
         EntityManager em = getEntityManager();

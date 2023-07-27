@@ -12,10 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-/**
- *
- * @author Sebastian
- */
 @Entity
 public class Equipo implements Serializable {
     @Id
