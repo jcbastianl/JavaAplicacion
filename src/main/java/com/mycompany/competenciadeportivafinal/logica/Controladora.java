@@ -26,11 +26,14 @@ public class Controladora {
         controlPersis.agregarLiga(liga);
     }
 
-    public void agregarEquipo(String nombreEquipo) {
+    public void agregarEquipo(String nombreEquipo, Liga selectedLiga) {
     
-// Crea el equipo y asigna el nombre
+     // Crea el equipo y asigna el nombre
     Equipo equipo = new Equipo();
     equipo.setNombre(nombreEquipo);
+
+    // Asigna la liga al equipo
+    equipo.setLiga(selectedLiga);
 
     // Guarda el equipo en la base de datos a través de la controladoraPersistencia
     controlPersis.agregarEquipo(equipo);

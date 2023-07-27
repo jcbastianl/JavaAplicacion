@@ -116,7 +116,7 @@ public class EquipoFrame extends javax.swing.JFrame {
     }
 
     // Llama al método agregarEquipo de la controladora y le pasa el nombre del equipo
-    control.agregarEquipo(nombreEquipo);
+    control.agregarEquipo(nombreEquipo, selectedLiga);
 
     JOptionPane.showMessageDialog(this, "El equipo ha sido agregado exitosamente.", "Equipo Agregado", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnAgregarEquipoActionPerformed
@@ -126,17 +126,17 @@ public class EquipoFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_txtNombreEquipoActionPerformed
 
     private void cmbEscojerLigaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEscojerLigaActionPerformed
-// Obtiene el nombre de la liga seleccionada en el JComboBox
-    Object selectedLigaObject = cmbEscojerLiga.getSelectedItem();
-    if (selectedLigaObject == null) {
-        // No hay elemento seleccionado, así que no hacemos nada o mostramos un mensaje de error si es necesario
-        return;
-    }
+// Obtén el nombre de la liga seleccionada en el JComboBox
+        Object selectedLigaObject = cmbEscojerLiga.getSelectedItem();
+        if (selectedLigaObject == null) {
+            // No hay elemento seleccionado, así que no hacemos nada o mostramos un mensaje de error si es necesario
+            return;
+        }
 
-    String nombreLigaSeleccionada = selectedLigaObject.toString();
+        String nombreLigaSeleccionada = selectedLigaObject.toString();
 
-    // Obtiene la liga correspondiente a partir del nombre seleccionado
-    selectedLiga = control.obtenerLigaPorNombre(nombreLigaSeleccionada);
+        // Obtiene la liga correspondiente a partir del nombre seleccionado
+        selectedLiga = control.obtenerLigaPorNombre(nombreLigaSeleccionada);
     }//GEN-LAST:event_cmbEscojerLigaActionPerformed
 
     private void llenarComboBoxLigas() {
