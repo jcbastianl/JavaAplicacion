@@ -71,4 +71,11 @@ public class Equipo implements Serializable {
     public void setLiga(Liga liga) {
         this.liga = liga;
     }
+    // Método para agregar un jugador al equipo
+    public void agregarJugador(Jugador jugador) {
+        jugadores.add(jugador);
+        jugador.setEquipo(this); // Establecer el equipo del jugador como este equipo
+    }
+    
 }
+

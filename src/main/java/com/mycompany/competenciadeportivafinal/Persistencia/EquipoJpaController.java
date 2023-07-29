@@ -133,5 +133,14 @@ public class EquipoJpaController implements Serializable {
             em.close();
         }
     }
-    
+    public List<Equipo> findByNombre(String nombreEquipo) {
+    EntityManager em = getEntityManager();
+    try {
+        Query query = em.createQuery("SELECT e FROM Equipo e WHERE e.nombre = :nombre");
+        query.setParameter("nombre", nombreEquipo);
+        return query.getResultList();
+    } finally {
+        em.close();
+    }
+    }
 }

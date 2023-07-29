@@ -19,10 +19,22 @@ public class ControladoraPersistencia {
         ligaJpa.create(liga);
     }
 
- 
     public void agregarEquipo(Equipo equipo) {
         equipoJpa.create(equipo);
     }
+
+ public Equipo obtenerEquipoPorNombre(String nombreEquipo) {
+    // Llamar al método correspondiente en EquipoJpaController para obtener el equipo por su nombre
+    List<Equipo> equipos = equipoJpa.findByNombre(nombreEquipo);
+    if (!equipos.isEmpty()) {
+        return equipos.get(0); // Devuelve el primer equipo encontrado (suponiendo que el nombre del equipo es único)
+    }
+    return null; // Si no se encuentra ningún equipo con ese nombre, devuelve null
+}
     
-    
+    public List<Equipo> obtenerEquipos() {
+        // Llamar al método correspondiente en EquipoJpaController para obtener la lista de equipos
+        return equipoJpa.findEquipoEntities();
+    }
+
 }
