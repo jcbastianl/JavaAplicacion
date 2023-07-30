@@ -1,32 +1,24 @@
 package com.mycompany.competenciadeportivafinal.igu;
 
-
-
 import com.mycompany.competenciadeportivafinal.logica.Controladora;
 import com.mycompany.competenciadeportivafinal.logica.Equipo;
+import com.mycompany.competenciadeportivafinal.logica.Jugador;
 
 import java.util.List;
 import javax.swing.JOptionPane;
-
-
-
+import javax.swing.table.DefaultTableModel;
 
 public class JugadorFrame extends javax.swing.JFrame {
 
-  Controladora control = new Controladora();
- 
-  
+    Controladora control = new Controladora();
+    private javax.swing.table.DefaultTableModel modeloTabla;
+
     public JugadorFrame() {
         initComponents();
         llenarComboBoxEquipos();
-   
-        
-        
-     
+        llenarTablaJugadores();
     }
 
-   
-     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -199,6 +191,25 @@ public class JugadorFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void llenarTablaJugadores() {
+        // Obtén la lista de jugadores desde la base de datos utilizando la clase ControladoraPersistencia
+    List<Jugador> jugadores = control.obtenerJugadores();
+
+    // Inicializa el modelo de la tabla
+    DefaultTableModel model = new DefaultTableModel(
+            new Object[][]{},
+            new String[]{"Nombre", "Apellido", "Dorsal", "Edad", "Equipo"}
+    );
+
+    // Agrega los jugadores al modelo de la tabla junto con el nombre del equipo al que pertenecen
+    for (Jugador jugador : jugadores) {
+        Object[] fila = {jugador.getNombre(), jugador.getApellido(), jugador.getDorsal(), jugador.getEdad(), jugador.getEquipo().getNombre()};
+        model.addRow(fila);
+    }
+
+    // Establece el modelo de la tabla con los datos actualizados
+    tablaModelo.setModel(model);
+    }
     private void txtApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtApellidoActionPerformed
@@ -216,54 +227,63 @@ public class JugadorFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_txtPosicionActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      // Obtener los datos del jugador desde los campos de texto
-    int dorsal = Integer.parseInt(txtDorsal.getText());
-    String nombre = txtNombre.getText();
-    int edad = Integer.parseInt(txtEdad.getText());
-    String apellido = txtApellido.getText();
-    String posicion = txtPosicion.getText();
+       // Obtener los datos del jugador desde los campos de texto
+        int dorsal = Integer.parseInt(txtDorsal.getText());
+        String nombre = txtNombre.getText();
+        int edad = Integer.parseInt(txtEdad.getText());
+        String apellido = txtApellido.getText();
+        String posicion = txtPosicion.getText();
 
-    // Obtener el equipo seleccionado en el ComboBox
-    String nombreEquipo = cmbEquipo.getSelectedItem().toString();
-    Equipo equipo = control.obtenerEquipoPorNombre(nombreEquipo);
+        // Obtener el equipo seleccionado en el ComboBox
+        String nombreEquipo = cmbEquipo.getSelectedItem().toString();
+        Equipo equipo = control.obtenerEquipoPorNombre(nombreEquipo);
 
-    // Agregar el jugador al equipo
-    control.agregarJugador(dorsal, nombre, edad, apellido, posicion, equipo);
+        // Agregar el jugador al equipo
+        control.agregarJugador(dorsal, nombre, edad, apellido, posicion, equipo);
 
-    JOptionPane.showMessageDialog(this, "El jugador ha sido agregado exitosamente.", "Jugador Agregado", JOptionPane.INFORMATION_MESSAGE);
-     
-    // Reiniciar los campos de texto
-    txtDorsal.setText("");
-    txtNombre.setText("");
-    txtEdad.setText("");
-    txtApellido.setText("");
-    txtPosicion.setText("");
-    // Actualizar la JComboBox de equipos con el nuevo jugador agregado
-    llenarComboBoxEquipos();
-    
-    
-    // Actualizar la tabla para mostrar el nuevo jugador y el equipo al que pertenece
-    Object[] jugadorData = {nombre, apellido, dorsal, edad, nombreEquipo};
-    tablaModelo.addRow(jugadorData);
-    
+        // Actualizar la tabla de jugadores con los nuevos datos
+        llenarTablaJugadores();
+
+        JOptionPane.showMessageDialog(this, "El jugador ha sido agregado exitosamente.", "Jugador Agregado", JOptionPane.INFORMATION_MESSAGE);
+
+        // Reiniciar los campos de texto
+        txtDorsal.setText("");
+        txtNombre.setText("");
+        txtEdad.setText("");
+        txtApellido.setText("");
+        txtPosicion.setText("");
+
+        // Actualizar la JComboBox de equipos con el nuevo equipo agregado
+        llenarComboBoxEquipos();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void cmbEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEquipoActionPerformed
-         // Llamar al método para llenar la JComboBox de equipos con los equipos de la liga seleccionada
+       // Llamar al método para llenar la JComboBox de equipos con los equipos de la liga seleccionada
         llenarComboBoxEquipos();
+
+        // Actualizar la tabla de jugadores con los nuevos datos del equipo seleccionado
+        llenarTablaJugadores();
     }//GEN-LAST:event_cmbEquipoActionPerformed
 
     private void llenarComboBoxEquipos() {
-    /// Obtener la lista de todos los equipos utilizando la instancia de la clase Controladora
-    List<Equipo> equipos = control.obtenerEquipos();
+        // Obtener la lista de todos los equipos utilizando la instancia de la clase Controladora
+        List<Equipo> equipos = control.obtenerEquipos();
 
-    // Limpiar la JComboBox de equipos antes de agregar los nuevos elementos
-    cmbEquipo.removeAllItems();
+        // Guardar el equipo actualmente seleccionado (si hay alguno)
+        Object equipoSeleccionado = cmbEquipo.getSelectedItem();
 
-    // Agregar los nombres de los equipos a la JComboBox de equipos
-    for (Equipo equipo : equipos) {
-        cmbEquipo.addItem(equipo.getNombre());
-    }
+        // Limpiar la JComboBox de equipos antes de agregar los nuevos elementos
+        cmbEquipo.removeAllItems();
+
+        // Agregar los nombres de los equipos a la JComboBox de equipos
+        for (Equipo equipo : equipos) {
+            cmbEquipo.addItem(equipo.getNombre());
+        }
+
+        // Establecer el equipo previamente seleccionado nuevamente en el JComboBox (si existe)
+        if (equipoSeleccionado != null) {
+            cmbEquipo.setSelectedItem(equipoSeleccionado);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

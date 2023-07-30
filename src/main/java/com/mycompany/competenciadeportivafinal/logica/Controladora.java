@@ -1,6 +1,7 @@
 package com.mycompany.competenciadeportivafinal.logica;
 
 import com.mycompany.competenciadeportivafinal.Persistencia.ControladoraPersistencia;
+import com.mycompany.competenciadeportivafinal.Persistencia.JugadorJpaController;
 import com.mycompany.competenciadeportivafinal.Persistencia.LigaJpaController;
 import java.util.Date;
 import java.util.List;
@@ -59,5 +60,11 @@ public class Controladora {
        // Llamar al método correspondiente en ControladoraPersistencia para obtener la lista de equipos
         return controlPersis.obtenerEquipos();
     }
+    public List<Jugador> obtenerJugadores() {
+        // Llamar al método correspondiente en JugadorJpaController para obtener la lista de jugadores
+        JugadorJpaController jugadorJpa = new JugadorJpaController();
+        return jugadorJpa.findJugadorEntities();
+    }
+    
    
 }

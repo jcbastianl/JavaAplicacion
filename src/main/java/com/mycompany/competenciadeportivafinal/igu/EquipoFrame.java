@@ -1,9 +1,11 @@
 package com.mycompany.competenciadeportivafinal.igu;
 
 import com.mycompany.competenciadeportivafinal.logica.Controladora;
+import com.mycompany.competenciadeportivafinal.logica.Equipo;
 import com.mycompany.competenciadeportivafinal.logica.Liga;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class EquipoFrame extends javax.swing.JFrame {
 
@@ -14,7 +16,7 @@ public class EquipoFrame extends javax.swing.JFrame {
     public EquipoFrame() {
         initComponents();
         llenarComboBoxLigas();
-
+llenarTablaEquipos();
     }
 
     @SuppressWarnings("unchecked")
@@ -28,7 +30,7 @@ public class EquipoFrame extends javax.swing.JFrame {
         cmbEscojerLiga = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaEquipos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,18 +58,18 @@ public class EquipoFrame extends javax.swing.JFrame {
 
         jLabel2.setText("Liga");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaEquipos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Equipos", "Liga"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaEquipos);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -122,7 +124,21 @@ public class EquipoFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+private void llenarTablaEquipos() {
+    // Obtén la lista de equipos desde la base de datos utilizando la clase ControladoraPersistencia
+    List<Equipo> equipos = control.obtenerEquipos();
 
+    // Obtén el modelo de la tabla
+    DefaultTableModel model = (DefaultTableModel) tablaEquipos.getModel();
+
+    // Limpia la tabla antes de agregar los datos
+    model.setRowCount(0);
+
+    // Agrega los equipos al modelo de la tabla
+    for (Equipo equipo : equipos) {
+        model.addRow(new Object[]{equipo.getNombre(), equipo.getLiga().getNombre()});
+    }
+}
     private void btnAgregarEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarEquipoActionPerformed
   // Obtiene el nombre del equipo desde el cuadro de texto
     String nombreEquipo = txtNombreEquipo.getText();
@@ -178,7 +194,7 @@ public class EquipoFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tablaEquipos;
     private javax.swing.JTextField txtNombreEquipo;
     // End of variables declaration//GEN-END:variables
 }
