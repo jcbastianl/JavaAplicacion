@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package com.mycompany.competenciadeportivafinal.logica;
 
 /**
@@ -9,6 +6,7 @@ package com.mycompany.competenciadeportivafinal.logica;
  * @author Sebastian
  */
 
+import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,17 +14,27 @@ import javax.persistence.Id;
 
 // Representa un partido entre dos equipos. Contendría atributos como el equipo local, el equipo visitante, el marcador, etc.
 import java.util.Date;
+import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class Partido {
+public class Partido implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
     
+    @ManyToOne(cascade = CascadeType.PERSIST) // Agrega la opción cascade
+    @JoinColumn(name = "jornada_id")
+    private Jornada jornada;
+    
+    @ManyToOne(cascade = CascadeType.PERSIST) // Agrega la opción cascade
+    @JoinColumn(name = "liga_id")
+    private Liga liga;
+    
     
     private Equipo equipoLocal;
 
-    
     private Equipo equipoVisitante;
 
     private Date fechaInicio;
@@ -78,10 +86,21 @@ public class Partido {
         this.fechaFin = fechaFin;
     }
 
-    public Partido(Equipo equipoLocal, Equipo equipoVisitante, Date fechaInicio, Date fechaFin) {
+    public Jornada getJornada() {
+        return jornada;
+    }
+
+    public void setJornada(Jornada jornada) {
+        this.jornada = jornada;
+    }
+    
+    
+
+    public Partido(Equipo equipoLocal, Equipo equipoVisitante, Date fechaInicio, Date fechaFin, Jornada jornada) {
         this.equipoLocal = equipoLocal;
         this.equipoVisitante = equipoVisitante;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
+        this.jornada = jornada;
     }
 }

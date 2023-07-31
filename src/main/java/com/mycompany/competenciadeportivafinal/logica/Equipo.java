@@ -1,4 +1,4 @@
-
+ 
 package com.mycompany.competenciadeportivafinal.logica;
 
 import java.io.Serializable;

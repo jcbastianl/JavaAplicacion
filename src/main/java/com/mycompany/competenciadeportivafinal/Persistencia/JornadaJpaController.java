@@ -6,12 +6,14 @@ package com.mycompany.competenciadeportivafinal.Persistencia;
 
 import com.mycompany.competenciadeportivafinal.Persistencia.exceptions.NonexistentEntityException;
 import com.mycompany.competenciadeportivafinal.logica.Jornada;
+import com.mycompany.competenciadeportivafinal.logica.Liga;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
@@ -24,9 +26,14 @@ public class JornadaJpaController implements Serializable {
     public JornadaJpaController(EntityManagerFactory emf) {
         this.emf = emf;
     }
-   
+        public JornadaJpaController(){
+        emf = Persistence.createEntityManagerFactory("CompePU"); 
+    }
+        
     private EntityManagerFactory emf = null;
 
+
+    
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
@@ -134,5 +141,25 @@ public class JornadaJpaController implements Serializable {
             em.close();
         }
     }
-    
+    public List<Jornada> findJornadasByLiga(Liga liga) {
+        EntityManager em = getEntityManager();
+        try {
+            Query query = em.createQuery("SELECT j FROM Jornada j WHERE j.liga = :liga");
+            query.setParameter("liga", liga);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    public List<Liga> findByNombre(String nombreLiga) {
+    EntityManager em = getEntityManager();
+    try {
+        Query query = em.createQuery("SELECT l FROM Liga l WHERE l.nombre = :nombreLiga");
+        query.setParameter("nombreLiga", nombreLiga);
+        return query.getResultList();
+    } finally {
+        em.close();
+    }
 }
+}
+

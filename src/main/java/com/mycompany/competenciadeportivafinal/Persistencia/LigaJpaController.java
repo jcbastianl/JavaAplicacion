@@ -150,5 +150,18 @@ public class LigaJpaController implements Serializable {
         em.close();
     }
 }
-    
+    public Liga findByNombre(String nombreLiga) {
+    EntityManager em = getEntityManager();
+    try {
+        Query query = em.createQuery("SELECT l FROM Liga l WHERE l.nombre = :nombreLiga");
+        query.setParameter("nombreLiga", nombreLiga);
+        List<Liga> ligas = query.getResultList();
+        if (!ligas.isEmpty()) {
+            return ligas.get(0);
+        }
+        return null;
+    } finally {
+        em.close();
+    }
+}
 }

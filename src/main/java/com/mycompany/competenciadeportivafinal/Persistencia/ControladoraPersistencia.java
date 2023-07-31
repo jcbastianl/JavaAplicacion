@@ -1,8 +1,10 @@
 package com.mycompany.competenciadeportivafinal.Persistencia;
 
 import com.mycompany.competenciadeportivafinal.logica.Equipo;
+import com.mycompany.competenciadeportivafinal.logica.Jornada;
 import com.mycompany.competenciadeportivafinal.logica.Jugador;
 import com.mycompany.competenciadeportivafinal.logica.Liga;
+import com.mycompany.competenciadeportivafinal.logica.Partido;
 import java.util.List;
 
 public class ControladoraPersistencia {
@@ -10,6 +12,8 @@ public class ControladoraPersistencia {
     JugadorJpaController jugadorJpa = new JugadorJpaController();
     LigaJpaController ligaJpa = new LigaJpaController();
     EquipoJpaController equipoJpa = new EquipoJpaController();
+    JornadaJpaController jornadaJpa = new JornadaJpaController();
+   PartidoJpaController partidoJpa = new PartidoJpaController();
 
     public void agregarJugador(Jugador jugador) {
         jugadorJpa.create(jugador);
@@ -36,5 +40,25 @@ public class ControladoraPersistencia {
         // Llamar al método correspondiente en EquipoJpaController para obtener la lista de equipos
         return equipoJpa.findEquipoEntities();
     }
+    
+    public Liga obtenerLigaPorNombre(String nombreLiga) {
+    // Llama al método correspondiente en LigaJpaController para obtener la Liga por su nombre
+    return ligaJpa.findByNombre(nombreLiga);
+}
+      
+   public void agregarJornada(Jornada jornada) {
+    // Guardar la jornada en la base de datos
+    
+    jornadaJpa.create(jornada);
+}
+
+ public void agregarPartido(Partido partido) {
+
+        partidoJpa.create(partido);
+    }
+
+
+
+
 
 }

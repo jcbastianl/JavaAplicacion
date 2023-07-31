@@ -2,6 +2,7 @@
 package com.mycompany.competenciadeportivafinal.logica;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 import javax.persistence.CascadeType;
@@ -9,7 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 import javax.persistence.OneToMany;
+
 
 /**
  *
@@ -21,10 +24,13 @@ public class Liga implements Serializable {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
     
+    @OneToMany(mappedBy = "liga", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<Jornada> jornadas;
+    
     private String nombre;
     private String deporte;
     
-    @OneToMany(mappedBy = "liga", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "liga", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Equipo> equipos;
     
     private Date FechaInicio;
@@ -78,4 +84,13 @@ public class Liga implements Serializable {
     public void setFechaFin(Date FechaFin) {
         this.FechaFin = FechaFin;
     }
+
+    public List<Jornada> getJornadas() {
+        return jornadas;
+    }
+
+    public void setJornadas(List<Jornada> jornadas) {
+        this.jornadas = jornadas;
+    }
+    
 }
