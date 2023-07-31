@@ -95,12 +95,10 @@ public class Partido implements Serializable {
     }
     
     
-
-    public Partido(Equipo equipoLocal, Equipo equipoVisitante, Date fechaInicio, Date fechaFin, Jornada jornada) {
+ public Partido(Equipo equipoLocal, Equipo equipoVisitante, Date fechaInicio, Jornada jornada) {
         this.equipoLocal = equipoLocal;
         this.equipoVisitante = equipoVisitante;
         this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
-        this.jornada = jornada;
+        this.jornada = jornada; // Asignamos la jornada al partido
     }
 }

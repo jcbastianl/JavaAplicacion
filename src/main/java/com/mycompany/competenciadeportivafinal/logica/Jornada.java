@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -79,23 +80,30 @@ public class Jornada implements Serializable {
 
     // Método para organizar los enfrentamientos entre los equipos de manera aleatoria
     void organizarEnfrentamientosAleatorios(List<Equipo> equipos, Date fechaInicio, Date fechaFin) {
-        ArrayList<Equipo> equiposAleatorios = new ArrayList<>(equipos);
-        Collections.shuffle(equiposAleatorios); // Mezcla aleatoriamente los equipos
+       ArrayList<Equipo> equiposAleatorios = new ArrayList<>(equipos);
+    Collections.shuffle(equiposAleatorios); // Mezcla aleatoriamente los equipos
 
-        // Crea los enfrentamientos entre los equipos mezclados
-        for (int i = 0; i < equiposAleatorios.size(); i += 2) {
-            if (i + 1 < equiposAleatorios.size()) {
-                Equipo equipoLocal = equiposAleatorios.get(i);
-                Equipo equipoVisita = equiposAleatorios.get(i + 1);
+    Random random = new Random();
 
-                // Crea el partido y agrega el enfrentamiento a la lista de partidos
-                Partido partido = new Partido(equipoLocal, equipoVisita, fechaInicio, fechaFin, this);
-                
-                
-                
-                partidos.add(partido);
-            }
+    // Crea los enfrentamientos entre los equipos mezclados
+    for (int i = 0; i < equiposAleatorios.size(); i += 2) {
+        if (i + 1 < equiposAleatorios.size()) {
+            Equipo equipoLocal = equiposAleatorios.get(i);
+            Equipo equipoVisita = equiposAleatorios.get(i + 1);
+
+            // Genera una fecha aleatoria entre FechaInicio y FechaFin de la liga
+            long minMillis = liga.getFechaInicio().getTime();
+            long maxMillis = liga.getFechaFin().getTime();
+            long randomMillis = minMillis + (long) (random.nextDouble() * (maxMillis - minMillis));
+
+            Date fechaAleatoria = new Date(randomMillis);
+
+            // Crea el partido y agrega el enfrentamiento a la lista de partidos
+            Partido partido = new Partido(equipoLocal, equipoVisita, fechaAleatoria, this);
+
+            partidos.add(partido);
         }
-        System.out.println("Partiods creados: " + this.partidos);
     }
+    System.out.println("Partidos creados: " + this.partidos);
+}
 }
