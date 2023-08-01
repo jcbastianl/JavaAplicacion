@@ -78,25 +78,35 @@ public class Jornada implements Serializable {
     }
 
 
-    // Método para organizar los enfrentamientos entre los equipos de manera aleatoria
-    void organizarEnfrentamientosAleatorios(List<Equipo> equipos, Date fechaInicio, Date fechaFin) {
-       ArrayList<Equipo> equiposAleatorios = new ArrayList<>(equipos);
+  void organizarEnfrentamientosAleatorios(List<Equipo> equipos, Date fechaInicio, Date fechaFin) {
+   ArrayList<Equipo> equiposAleatorios = new ArrayList<>(equipos);
     Collections.shuffle(equiposAleatorios); // Mezcla aleatoriamente los equipos
 
     Random random = new Random();
 
-    // Crea los enfrentamientos entre los equipos mezclados
-    for (int i = 0; i < equiposAleatorios.size(); i += 2) {
-        if (i + 1 < equiposAleatorios.size()) {
-            Equipo equipoLocal = equiposAleatorios.get(i);
-            Equipo equipoVisita = equiposAleatorios.get(i + 1);
+    List<Date> fechasDisponibles = new ArrayList<>();
+    long minMillis = this.liga.getFechaInicio().getTime(); // Utilizar la fecha de inicio de la liga
+    long maxMillis = this.liga.getFechaFin().getTime(); // Utilizar la fecha de fin de la liga
 
-            // Genera una fecha aleatoria entre FechaInicio y FechaFin de la liga
-            long minMillis = liga.getFechaInicio().getTime();
-            long maxMillis = liga.getFechaFin().getTime();
-            long randomMillis = minMillis + (long) (random.nextDouble() * (maxMillis - minMillis));
+    // Generar la lista de fechas disponibles
+    for (long millis = minMillis; millis <= maxMillis; millis += 86400000L) { // 86400000L es un día en milisegundos
+        fechasDisponibles.add(new Date(millis));
+    }
 
-            Date fechaAleatoria = new Date(randomMillis);
+    while (!equiposAleatorios.isEmpty()) {
+        Equipo equipoLocal = equiposAleatorios.get(0);
+        equiposAleatorios.remove(0);
+
+        // Eliminar el equipo local de la lista de equipos visitantes disponibles
+        List<Equipo> equiposVisitantesDisponibles = new ArrayList<>(equiposAleatorios);
+
+        for (int i = 0; i < equiposVisitantesDisponibles.size(); i++) {
+            Equipo equipoVisita = equiposVisitantesDisponibles.get(i);
+
+            // Seleccionar aleatoriamente una fecha disponible y eliminarla de la lista
+            int randomIndex = random.nextInt(fechasDisponibles.size());
+            Date fechaAleatoria = fechasDisponibles.get(randomIndex);
+            fechasDisponibles.remove(randomIndex);
 
             // Crea el partido y agrega el enfrentamiento a la lista de partidos
             Partido partido = new Partido(equipoLocal, equipoVisita, fechaAleatoria, this);
@@ -104,6 +114,7 @@ public class Jornada implements Serializable {
             partidos.add(partido);
         }
     }
+
     System.out.println("Partidos creados: " + this.partidos);
 }
 }
