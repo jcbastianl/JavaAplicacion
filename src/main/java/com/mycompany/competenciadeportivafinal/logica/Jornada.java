@@ -72,7 +72,7 @@ public class Jornada implements Serializable {
     public List<Partido> getPartidos() {
         return partidos;
     }
-
+ 
     public void setPartidos(ArrayList<Partido> partidos) {
         this.partidos = partidos;
     }
